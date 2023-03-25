@@ -7,7 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.ai_home.RoomData
+
+
+data class RoomData(val id: Int, val title: String)
 
 @Composable
 fun RoomListComponent(onRoomChange: (id: Int) -> Unit, rooms: List<RoomData>) {

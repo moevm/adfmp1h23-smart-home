@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BottomAppBarComponent(onAddClicked: () -> Unit) {
+fun BottomAppBarComponent(onAddClicked: () -> Unit, onEditClicked: () -> Unit) {
     BottomAppBar(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -31,7 +31,7 @@ fun BottomAppBarComponent(onAddClicked: () -> Unit) {
                 Icon(Icons.Filled.Add, "Localized description")
             }
             FloatingActionButton(
-                onClick = { /* do something */ },
+                onClick = { onEditClicked() },
             ) {
                 Icon(Icons.Filled.Edit, "Localized description")
             }
