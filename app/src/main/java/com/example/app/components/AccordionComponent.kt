@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -37,7 +38,7 @@ fun Accordion(title: String, content: @Composable () -> Unit) {
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 40.dp),
             onClick = { expanded = !expanded },
-            shape = Shapes.None
+//            shape = Shapes.None
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center

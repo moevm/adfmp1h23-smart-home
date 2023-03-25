@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -34,7 +35,8 @@ fun MenuListComponent(title: String, menuItems: List<String>, onItemClick: (Stri
 
     var expanded by remember { mutableStateOf(false) }
     Card(
-        shape = Shapes.None, modifier = Modifier
+//        shape = Sha,
+        modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {

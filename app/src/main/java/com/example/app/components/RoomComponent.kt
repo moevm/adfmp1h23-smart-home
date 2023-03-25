@@ -6,7 +6,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.example.ai_home.RoomData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

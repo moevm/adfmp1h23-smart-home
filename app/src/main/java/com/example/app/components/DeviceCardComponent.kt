@@ -2,9 +2,9 @@ package com.example.ai_home.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeviceCardComponent(card: CardData) {
+fun DeviceCardComponent(
+    card: CardData,
+    editMode:  MutableState<Boolean>,
+    onRemoveClick: (id: Int) -> Unit // callback for remove button click
+) {
     var isFlipped by remember { mutableStateOf(false) }
 
     Card(
@@ -41,6 +45,16 @@ fun DeviceCardComponent(card: CardData) {
             ) {
                 Text(text = card.title, fontWeight = FontWeight.Bold)
                 Text(text = card.description)
+            }
+
+            // Add remove button to top right corner
+            if (editMode.value) {
+                IconButton(
+                    onClick = { onRemoveClick(card.id) },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Remove")
+                }
             }
         }
     }
