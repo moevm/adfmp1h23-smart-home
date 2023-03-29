@@ -1,14 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        tools:ignore="MissingConstraints">
-    </TextView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="40">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20">
+            <FrameLayout
+                android:background="#CCCCCC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".40">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/back_image"
+                    android:background="#CCCCCC"
+                    android:src="@drawable/whilte_back_but"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
+            <TextView
+                android:background="#CCCCCC"
+                android:textColor="@color/white"
+                android:text="Поиск устройтсв"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".10"
+                android:gravity="center">
+            </TextView>
+            <TextView
+                android:background="#CCCCCC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".40" />
+        </LinearLayout>
+        <ImageView
+            android:background="#CCCCCC"
+            android:src="@drawable/button_on2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20">
+            <TextView
+                android:background="#CCCCCC"
+                android:textColor="@color/white"
+                android:text="Фильтрация"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:gravity="center">
+            </TextView>
+            <Spinner
+                android:background="#CCCCCC"
+                android:textColor="@color/white"
+                android:outlineSpotShadowColor="@color/white"
+                android:id="@+id/spinner"
+                android:text="Поиск устройтсв"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ExpandableListView
+        android:background="#CCCCCC"
+        android:textColor="@color/white"
+        android:id="@+id/expendableList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="60"
+        android:choiceMode="singleChoice"
+        android:orientation="vertical" />
+</LinearLayout>
