@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:textColor="#ff0000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Authors:Efimov 9303"
@@ -18,7 +19,7 @@
         app:layout_constraintVertical_bias="0.275" />
 
     <Button
-        android:id="@+id/TextView05"
+        android:id="@+id/push_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Push me"
