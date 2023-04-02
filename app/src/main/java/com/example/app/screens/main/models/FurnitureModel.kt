@@ -5,5 +5,5 @@ import androidx.compose.ui.graphics.painter.Painter
 data class FurnitureModel(
     var isSelected: Boolean,
     val text: String,
-    val painter: Painter
+    val painter: Painter?
 )

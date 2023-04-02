@@ -1,24 +1,20 @@
 package com.example.app.screens.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -26,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.ai_home.R
-import com.example.app.screens.RoomItem
 import com.example.app.screens.main.models.FurnitureItemStates
 import com.example.app.screens.main.models.FurnitureModel
 import com.example.app.ui.theme.*
@@ -66,6 +61,9 @@ fun MainScreen(
         )
     }
 
+    var textFieldValue by remember {
+        mutableStateOf("")
+    }
 
     val picture = painterResource(id = R.drawable.image_photo_room)
 
@@ -100,6 +98,15 @@ fun MainScreen(
     }
 
     var dialogIsActive by remember {
+        mutableStateOf(false)
+    }
+
+    //room -> true || device -> false
+    var addRoomOrDevice by remember {
+        mutableStateOf(false)
+    }
+
+    var dialogNameActive by remember {
         mutableStateOf(false)
     }
 
@@ -187,7 +194,8 @@ fun MainScreen(
             if (dialogIsActive) {
                 Dialog(onDismissRequest = { dialogIsActive = !dialogIsActive }) {
                     Card(
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier
+                            .align(Alignment.Center),
                         shape = RoundedCornerShape(28.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = PurpleDialog
@@ -208,11 +216,18 @@ fun MainScreen(
                                     tint = TextPurple,
                                     contentDescription = null
                                 )
-                                Text(
-                                    modifier = Modifier.padding(start = 8.dp),
-                                    text = "Добавить комнату",
-                                    color = TextPurple
-                                )
+                                TextButton(onClick = {
+                                    dialogIsActive = !dialogIsActive
+                                    addRoomOrDevice = true
+                                    dialogNameActive = !dialogNameActive
+                                }) {
+                                    Text(
+                                        modifier = Modifier.padding(start = 8.dp),
+                                        text = "Добавить комнату",
+                                        color = TextPurple
+                                    )
+                                }
+
                             }
                             Row(
                                 modifier = Modifier.padding(top = 20.dp),
@@ -225,73 +240,176 @@ fun MainScreen(
                                     tint = TextPurple,
                                     contentDescription = null
                                 )
-                                Text(
-                                    modifier = Modifier.padding(start = 8.dp),
-                                    text = "Добавить устройство",
-                                    color = TextPurple
-                                )
+                                TextButton(onClick = {
+                                    dialogIsActive = !dialogIsActive
+                                    dialogNameActive = !dialogNameActive
+                                    addRoomOrDevice = false
+                                }) {
+                                    Text(
+                                        modifier = Modifier.padding(start = 8.dp),
+                                        text = "Добавить устройство",
+                                        color = TextPurple
+                                    )
+                                }
+
                             }
                         }
                     }
                 }
+
             }
 
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = paddingValues.calculateTopPadding(),
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-                    .fillMaxSize()
-            ) {
-                ScrollableTabRow(
-                    modifier = Modifier
-                        .padding(top = 20.dp),
-                    selectedTabIndex = selectedIndex,
-                    edgePadding = 0.dp,
-                    divider = {},
-                    indicator = {}
-                ) {
-                    rooms.forEachIndexed { index, room ->
-                        Tab(
-                            selected = index == selectedIndex,
-                            onClick = { selectedIndex = index },
-                            interactionSource = NoRippleInteractionSource(),
-                            selectedContentColor = Color.Unspecified,
-                            unselectedContentColor = Color.Unspecified
-                        ) {
-                            RoomItem(
-                                modifier = Modifier,
-                                text = room,
-                                distance = abs(index - selectedIndex)
-                            )
-                        }
-                    }
-                }
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    columns = GridCells.Fixed(2)
-                ) {
+            if (dialogNameActive) {
+                Dialog(onDismissRequest = { dialogNameActive = !dialogNameActive }) {
+                    Card(
+                        modifier = Modifier.align(Alignment.Center),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = PurpleDialog
+                        ),
+                        elevation = CardDefaults.elevatedCardElevation(0.dp)
+                    ) {
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            IconButton(modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = 4.dp, end = 4.dp),
+                                onClick = { dialogNameActive = !dialogNameActive }) {
+                                Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    tint = White,
+                                    imageVector = Icons.Outlined.Close,
+                                    contentDescription = null
+                                )
+                            }
 
-                    items(furniture.size) { currentFurniture ->
-                        FurnitureItemUI(
-                            furnitureItemStates =
-                            if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
-                            else FurnitureItemStates.DeletedState,
-                            onDelete = {
-                                furniture.remove(furniture[currentFurniture])
-                            },
-                            furnitureModel = furniture[currentFurniture]
-                        )
+                            Column(
+                                modifier = Modifier
+                                    .padding(
+                                        top = 40.dp,
+                                        bottom = 12.dp,
+                                        start = 20.dp,
+                                        end = 20.dp
+                                    )
+                                    .align(Alignment.BottomEnd)
+                            ) {
+                                TextField(
+                                    modifier = Modifier.padding(bottom = 24.dp),
+                                    value = textFieldValue,
+                                    onValueChange = { newValue ->
+                                        textFieldValue = newValue
+                                    },
+                                    placeholder = {
+                                        Text(
+                                            text = "Название",
+                                            fontSize = 16.sp,
+                                            color = Grey
+                                        )
+                                    },
+                                    colors = TextFieldDefaults.textFieldColors(
+                                        textColor = Grey,
+                                        containerColor = Color.Transparent,
+                                        cursorColor = Grey,
+                                        unfocusedIndicatorColor = Grey,
+                                        focusedIndicatorColor = Grey,
+                                        placeholderColor = Grey
+                                    )
+                                )
+                                TextButton(
+                                    modifier = Modifier.background(
+                                        color = Green,
+                                        shape = RoundedCornerShape(32.dp)
+                                    ),
+                                    onClick = {
+                                        if (addRoomOrDevice) rooms.add(textFieldValue)
+                                        else furniture.add(
+                                            FurnitureModel(
+                                                isSelected = false,
+                                                text = textFieldValue,
+                                                painter = null
+                                            )
+                                        )
+                                        dialogNameActive = !dialogNameActive
+                                    }) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            modifier = Modifier
+                                                .padding(
+                                                    vertical = 8.dp,
+                                                ),
+
+                                            text = "Добавить",
+                                            color = White
+                                        )
+                                    }
+
+
+                                }
+
+                            }
+                        }
                     }
 
                 }
             }
         }
 
+        Column(
+            modifier = Modifier
+                .padding(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
+                .fillMaxSize()
+        ) {
+            ScrollableTabRow(
+                modifier = Modifier
+                    .padding(top = 20.dp),
+                selectedTabIndex = selectedIndex,
+                edgePadding = 0.dp,
+                divider = {},
+                indicator = {}
+            ) {
+                rooms.forEachIndexed { index, room ->
+                    Tab(
+                        selected = index == selectedIndex,
+                        onClick = { selectedIndex = index },
+                        interactionSource = NoRippleInteractionSource(),
+                        selectedContentColor = Color.Unspecified,
+                        unselectedContentColor = Color.Unspecified
+                    ) {
+                        RoomItem(
+                            modifier = Modifier,
+                            text = room,
+                            distance = abs(index - selectedIndex)
+                        )
+                    }
+                }
+            }
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                columns = GridCells.Fixed(2)
+            ) {
 
+                items(furniture.size) { currentFurniture ->
+                    FurnitureItemUI(
+                        furnitureItemStates =
+                        if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
+                        else FurnitureItemStates.DeletedState,
+                        onDelete = {
+                            furniture.remove(furniture[currentFurniture])
+                        },
+                        furnitureModel = furniture[currentFurniture]
+                    )
+                }
+
+            }
+        }
     }
 }

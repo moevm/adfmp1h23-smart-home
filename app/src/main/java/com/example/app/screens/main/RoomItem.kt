@@ -1,4 +1,4 @@
-package com.example.app.screens
+package com.example.app.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.material3.Text
@@ -17,6 +17,6 @@ fun RoomItem(
     Text(
         modifier = Modifier.background(ProjectBlack),
         text = text,
-        color = White.copy(alpha = max(1f - 0.25f * distance, 0f))
+        color = White.copy(alpha = max(1f - 0.25f * distance, 0.5f))
     )
 }

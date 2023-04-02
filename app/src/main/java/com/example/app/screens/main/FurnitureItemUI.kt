@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.app.screens.main.models.CustomSwitch
@@ -23,7 +24,7 @@ import com.example.app.ui.theme.*
 @Composable
 fun FurnitureItemUI(
     modifier: Modifier = Modifier,
-    onDelete : () -> Unit,
+    onDelete: () -> Unit,
     furnitureItemStates: FurnitureItemStates,
     furnitureModel: FurnitureModel
 ) {
@@ -74,7 +75,7 @@ fun FurnitureItemUI(
                         modifier = Modifier
                             .size(100.dp)
                             .padding(top = 6.dp),
-                        painter = furnitureModel.painter,
+                        painter = furnitureModel.painter ?: ColorPainter(White),
                         contentDescription = null
                     )
                     Text(
@@ -95,7 +96,7 @@ fun FurnitureItemUI(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .clickable {
-                               onDelete()
+                        onDelete()
                     },
                 shape = CircleShape,
                 color = Red,
