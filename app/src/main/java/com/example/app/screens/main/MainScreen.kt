@@ -105,11 +105,6 @@ fun MainScreen(
         mutableStateOf(false)
     }
 
-    //room -> true || device -> false
-    var addRoomOrDevice by remember {
-        mutableStateOf(false)
-    }
-
     var dialogNameActive by remember {
         mutableStateOf(false)
     }
@@ -222,7 +217,6 @@ fun MainScreen(
                                 )
                                 TextButton(onClick = {
                                     dialogIsActive = !dialogIsActive
-                                    addRoomOrDevice = true
                                     dialogNameActive = !dialogNameActive
                                 }) {
                                     Text(
@@ -246,8 +240,7 @@ fun MainScreen(
                                 )
                                 TextButton(onClick = {
                                     dialogIsActive = !dialogIsActive
-                                    dialogNameActive = !dialogNameActive
-                                    addRoomOrDevice = false
+                                    navigateToAddItem()
                                 }) {
                                     Text(
                                         modifier = Modifier.padding(start = 8.dp),
@@ -324,8 +317,7 @@ fun MainScreen(
                                         shape = RoundedCornerShape(32.dp)
                                     ),
                                     onClick = {
-                                        if (addRoomOrDevice) rooms.add(textFieldValue)
-                                        else navigateToAddItem()
+                                        rooms.add(textFieldValue)
                                         dialogNameActive = !dialogNameActive
                                     }) {
                                     Row(
@@ -447,3 +439,4 @@ fun MainScreen(
         }
     }
 }
+

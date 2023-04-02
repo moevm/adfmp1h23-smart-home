@@ -29,7 +29,13 @@ fun Navigation(
                 )
             }
             composable(SEARCH_ROUTE) {
-
+                AddScreen(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

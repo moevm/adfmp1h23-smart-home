@@ -17,6 +17,6 @@ fun RoomItem(
     Text(
         modifier = Modifier.background(ProjectBlack),
         text = text,
-        color = White.copy(alpha = max(1f - 0.25f * distance, 0.5f))
+        color = White.copy(alpha = max(1f - 0.25f * distance, 0.4f))
     )
 }
