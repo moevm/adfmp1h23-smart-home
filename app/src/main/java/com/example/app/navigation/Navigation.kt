@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.app.navigation.ProjectDestinations.MAIN_ROUTE
 import com.example.app.navigation.ProjectDestinations.SEARCH_ROUTE
+import com.example.app.screens.AddScreen
 import com.example.app.screens.main.MainScreen
 
 @Composable
@@ -21,7 +22,10 @@ fun Navigation(
             composable(MAIN_ROUTE) {
                 MainScreen(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    navigateToAddItem = {
+                        navController.navigate(SEARCH_ROUTE)
+                    }
                 )
             }
             composable(SEARCH_ROUTE) {

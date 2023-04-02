@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ai_home.R
 import com.example.app.screens.main.models.FurnitureItemStates
 import com.example.app.screens.main.models.FurnitureModel
@@ -31,7 +33,9 @@ import kotlin.math.abs
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
+    navigateToAddItem : () -> Unit
 ) {
+    val mainViewModel = viewModel<MainViewModel>()
 
     var editingButtonIsChecked by remember {
         mutableStateOf(false)
@@ -321,13 +325,7 @@ fun MainScreen(
                                     ),
                                     onClick = {
                                         if (addRoomOrDevice) rooms.add(textFieldValue)
-                                        else furniture.add(
-                                            FurnitureModel(
-                                                isSelected = false,
-                                                text = textFieldValue,
-                                                painter = null
-                                            )
-                                        )
+                                        else navigateToAddItem()
                                         dialogNameActive = !dialogNameActive
                                     }) {
                                     Row(
@@ -366,8 +364,7 @@ fun MainScreen(
                 .fillMaxSize()
         ) {
             ScrollableTabRow(
-                modifier = Modifier
-                    .padding(top = 20.dp),
+                modifier = Modifier.padding(20.dp),
                 selectedTabIndex = selectedIndex,
                 edgePadding = 0.dp,
                 divider = {},
@@ -386,6 +383,43 @@ fun MainScreen(
                             text = room,
                             distance = abs(index - selectedIndex)
                         )
+                    }
+                }
+            }
+
+            if (mainScreenStates == MainScreenStates.DeletingState) {
+                Surface(
+                    modifier = Modifier.padding(
+                        horizontal = 24.dp
+                    ),
+                    color = Purple282832
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 4.dp,
+                                bottom = 4.dp,
+                                start = 48.dp,
+                                end = 12.dp
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val currentText = rooms.getOrNull(selectedIndex)
+                        Text(
+                            text = currentText?:"",
+                            color = White,
+                            fontSize = 16.sp
+                        )
+                        IconButton(onClick = { rooms.remove(currentText) }) {
+                            Icon(
+                                modifier = Modifier.size(20.dp),
+                                imageVector = Icons.Outlined.Delete,
+                                tint = White,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             }

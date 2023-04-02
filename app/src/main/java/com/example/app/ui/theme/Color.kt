@@ -21,3 +21,5 @@ val PurpleAnother = Color(0xFFE8DEF8)
 val Green = Color(0xFF80DF8A)
 
 val Grey = Color(0xFFC3C3C3)
+
+val Purple282832 = Color(0xFF282832)

@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,7 +76,7 @@ fun FurnitureItemUI(
                         modifier = Modifier
                             .size(100.dp)
                             .padding(top = 6.dp),
-                        painter = furnitureModel.painter ?: ColorPainter(White),
+                        painter = furnitureModel.painter ?: ColorPainter(Color.Transparent),
                         contentDescription = null
                     )
                     Text(
