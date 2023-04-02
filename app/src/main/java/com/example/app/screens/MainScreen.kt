@@ -4,16 +4,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.example.app.ui.theme.NoRippleInteractionSource
-import com.example.app.ui.theme.ProjectBlack
+import androidx.compose.ui.unit.sp
+import com.example.app.ui.theme.*
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,6 +41,77 @@ fun MainScreen(
 
     Scaffold(
         modifier = modifier.background(ProjectBlack),
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Мой дом", style = TextStyle().copy(
+                        color = Color.White,
+                        fontSize = 22.sp,
+                    )
+                )
+            }
+        },
+        bottomBar = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                color = PurpleDark
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 42.dp,
+                            vertical = 12.dp
+                        ),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .background(
+                                color = PurpleMedium,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(8.dp),
+                        onClick = {}
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp),
+                            imageVector = Icons.Outlined.Add,
+                            tint = PurpleLight,
+                            contentDescription = null
+                        )
+                    }
+                    IconButton(
+                        modifier = Modifier
+                            .background(
+                                color = PurpleMedium,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(8.dp),
+                        onClick = {}
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp),
+                            tint = PurpleLight,
+                            imageVector = Icons.Outlined.Edit,
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
+
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

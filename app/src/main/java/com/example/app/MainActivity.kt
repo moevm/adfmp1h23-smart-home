@@ -7,8 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import com.example.app.navigation.Navigation
 import com.example.app.ui.theme.AppTheme
 import com.example.app.ui.theme.ProjectBlack
@@ -21,6 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             AppTheme {
                 Surface(
                     modifier = Modifier
@@ -29,10 +32,10 @@ class MainActivity : ComponentActivity() {
                     Navigation(
                         modifier = Modifier
                             .fillMaxSize()
+                            .systemBarsPadding()
                     )
                 }
             }
         }
     }
 }
-
