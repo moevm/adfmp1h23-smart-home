@@ -3,6 +3,7 @@ package com.example.app.screens.main
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,7 @@ import com.example.app.ui.theme.*
 @Composable
 fun FurnitureItemUI(
     modifier: Modifier = Modifier,
+    onDelete : () -> Unit,
     furnitureItemStates: FurnitureItemStates,
     furnitureModel: FurnitureModel
 ) {
@@ -91,7 +93,10 @@ fun FurnitureItemUI(
         if (furnitureItemStates == FurnitureItemStates.DeletedState) {
             Surface(
                 modifier = Modifier
-                    .align(Alignment.TopEnd),
+                    .align(Alignment.TopEnd)
+                    .clickable {
+                               onDelete()
+                    },
                 shape = CircleShape,
                 color = Red,
                 border = BorderStroke(2.dp, color = White50)

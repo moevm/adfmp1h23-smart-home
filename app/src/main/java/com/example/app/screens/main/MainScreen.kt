@@ -1,9 +1,11 @@
 package com.example.app.screens.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -12,6 +14,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,11 +34,16 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
 
-    var editingButtonIsSelected by remember {
+    var editingButtonIsChecked by remember {
         mutableStateOf(false)
     }
     var addingButtonIsSelected by remember {
         mutableStateOf(false)
+    }
+
+    val mainScreenStates = remember(editingButtonIsChecked) {
+        if (editingButtonIsChecked) MainScreenStates.DeletingState
+        else MainScreenStates.SimpleState
     }
 
     var selectedIndex by remember {
@@ -54,7 +63,7 @@ fun MainScreen(
 
     val picture = painterResource(id = R.drawable.image_photo_room)
 
-    val furniture = remember {
+    val furniture = remember(mainScreenStates) {
         mutableStateListOf(
             FurnitureModel(
                 isSelected = false,
@@ -80,7 +89,7 @@ fun MainScreen(
                 isSelected = false,
                 text = "Торшер",
                 painter = picture
-            ),
+            )
         )
     }
 
@@ -127,8 +136,9 @@ fun MainScreen(
                             )
                             .padding(8.dp),
                         onClick = {
-                            addingButtonIsSelected = !addingButtonIsSelected
+                            //добавить диалоговое окно
                         }
+
                     ) {
                         Icon(
                             modifier = Modifier
@@ -141,12 +151,12 @@ fun MainScreen(
                     IconButton(
                         modifier = Modifier
                             .background(
-                                color = if (!editingButtonIsSelected) PurpleMedium else BlueLight,
+                                color = if (!editingButtonIsChecked) PurpleMedium else BlueLight,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(8.dp),
                         onClick = {
-                            editingButtonIsSelected = !editingButtonIsSelected
+                            editingButtonIsChecked = !editingButtonIsChecked
                         }
                     ) {
                         Icon(
@@ -204,7 +214,12 @@ fun MainScreen(
 
                 items(furniture.size) { currentFurniture ->
                     FurnitureItemUI(
-                        furnitureItemStates = FurnitureItemStates.SimpleState,
+                        furnitureItemStates =
+                            if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
+                            else FurnitureItemStates.DeletedState,
+                        onDelete = {
+                            furniture.remove(furniture[currentFurniture])
+                        },
                         furnitureModel = furniture[currentFurniture]
                     )
                 }
