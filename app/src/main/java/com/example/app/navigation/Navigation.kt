@@ -1,6 +1,5 @@
 package com.example.app.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -10,8 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.app.navigation.ProjectDestinations.MAIN_ROUTE
 import com.example.app.navigation.ProjectDestinations.SEARCH_ROUTE
-import com.example.app.screens.MainScreen
-import com.example.app.ui.theme.ProjectBlack
+import com.example.app.screens.main.MainScreen
 
 @Composable
 fun Navigation(

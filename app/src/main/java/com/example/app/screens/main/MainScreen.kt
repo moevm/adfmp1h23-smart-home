@@ -1,4 +1,4 @@
-package com.example.app.screens
+package com.example.app.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,9 +13,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ai_home.R
+import com.example.app.screens.RoomItem
+import com.example.app.screens.main.models.FurnitureItemStates
+import com.example.app.screens.main.models.FurnitureModel
 import com.example.app.ui.theme.*
 import kotlin.math.abs
 
@@ -25,17 +30,57 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
 
+    var editingButtonIsSelected by remember {
+        mutableStateOf(false)
+    }
+    var addingButtonIsSelected by remember {
+        mutableStateOf(false)
+    }
+
     var selectedIndex by remember {
         mutableStateOf(0)
     }
 
-    var rooms = remember {
+    val rooms = remember {
         mutableStateListOf(
             "Все",
             "Столовая",
             "Кухня",
             "Спальня",
             "Ванная"
+        )
+    }
+
+
+    val picture = painterResource(id = R.drawable.image_photo_room)
+
+    val furniture = remember {
+        mutableStateListOf(
+            FurnitureModel(
+                isSelected = false,
+                text = "Торшер",
+                painter = picture
+            ),
+            FurnitureModel(
+                isSelected = false,
+                text = "Торшер",
+                painter = picture
+            ),
+            FurnitureModel(
+                isSelected = false,
+                text = "Торшер",
+                painter = picture
+            ),
+            FurnitureModel(
+                isSelected = false,
+                text = "Торшер",
+                painter = picture
+            ),
+            FurnitureModel(
+                isSelected = false,
+                text = "Торшер",
+                painter = picture
+            ),
         )
     }
 
@@ -77,11 +122,13 @@ fun MainScreen(
                     IconButton(
                         modifier = Modifier
                             .background(
-                                color = PurpleMedium,
+                                color = if (!addingButtonIsSelected) PurpleMedium else BlueLight,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(8.dp),
-                        onClick = {}
+                        onClick = {
+                            addingButtonIsSelected = !addingButtonIsSelected
+                        }
                     ) {
                         Icon(
                             modifier = Modifier
@@ -94,11 +141,13 @@ fun MainScreen(
                     IconButton(
                         modifier = Modifier
                             .background(
-                                color = PurpleMedium,
+                                color = if (!editingButtonIsSelected) PurpleMedium else BlueLight,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(8.dp),
-                        onClick = {}
+                        onClick = {
+                            editingButtonIsSelected = !editingButtonIsSelected
+                        }
                     ) {
                         Icon(
                             modifier = Modifier
@@ -147,9 +196,18 @@ fun MainScreen(
             }
             LazyVerticalGrid(
                 modifier = Modifier
+                    .padding(12.dp)
                     .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 columns = GridCells.Fixed(2)
             ) {
+
+                items(furniture.size) { currentFurniture ->
+                    FurnitureItemUI(
+                        furnitureItemStates = FurnitureItemStates.SimpleState,
+                        furnitureModel = furniture[currentFurniture]
+                    )
+                }
 
             }
         }

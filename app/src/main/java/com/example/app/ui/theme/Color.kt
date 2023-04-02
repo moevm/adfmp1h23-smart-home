@@ -11,5 +11,7 @@ val PurpleLight = Color(0xFFE8DEF8)
 val PurpleDark = Color(0x14D0BCFF)
 val BlueLight = Color(0xFF0FCAE3)
 
+val Red = Color(0xFFC33C3C)
+
 val PurpleAnother = Color(0xFFE8DEF8)
 val Green = Color(0xFF80DF8A)
