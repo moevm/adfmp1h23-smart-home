@@ -21,7 +21,31 @@ import androidx.core.view.ViewCompat
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
-    MaterialTheme{
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = ProjectBlack,
+            onPrimary = ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+            ProjectBlack,
+        )
+    ) {
         CompositionLocalProvider(
             content = content
         )
