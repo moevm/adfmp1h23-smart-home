@@ -76,26 +76,36 @@ fun MainScreen(
             FurnitureModel(
                 isSelected = false,
                 text = "Торшер",
+                room_id = 1,
+                room = rooms[1],
                 painter = picture
             ),
             FurnitureModel(
                 isSelected = false,
                 text = "Торшер",
+                room_id = 1,
+                room = rooms[1],
                 painter = picture
             ),
             FurnitureModel(
                 isSelected = false,
                 text = "Торшер",
+                room_id = 2,
+                room = rooms[2],
                 painter = picture
             ),
             FurnitureModel(
                 isSelected = false,
                 text = "Торшер",
+                room_id = 2,
+                room = rooms[2],
                 painter = picture
             ),
             FurnitureModel(
                 isSelected = false,
                 text = "Торшер",
+                room_id = 3,
+                room = rooms[3],
                 painter = picture
             )
         )
@@ -424,14 +434,18 @@ fun MainScreen(
             ) {
 
                 items(furniture.size) { currentFurniture ->
-                    FurnitureItemUI(
-                        furnitureItemStates =
-                        if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
-                        else FurnitureItemStates.DeletedState,
-                        onDelete = {
-                            furniture.remove(furniture[currentFurniture])
-                        },
-                        furnitureModel = furniture[currentFurniture]
+                    (
+                        if (selectedIndex == 0 || selectedIndex == furniture[currentFurniture].room_id) {
+                            FurnitureItemUI(
+                                furnitureItemStates =
+                                if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
+                                else FurnitureItemStates.DeletedState,
+                                onDelete = {
+                                    furniture.remove(furniture[currentFurniture])
+                                },
+                                furnitureModel = furniture[currentFurniture]
+                            )
+                        }
                     )
                 }
 

@@ -85,7 +85,12 @@ fun FurnitureItemUI(
                         color = White,
                         fontSize = 14.sp
                     )
-
+                    Text(
+                        modifier = Modifier.padding(top = 6.dp),
+                        text = furnitureModel.room,
+                        color = White,
+                        fontSize = 10.sp
+                    )
                 }
             }
 
