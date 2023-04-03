@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +35,10 @@ import kotlin.math.abs
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    navigateToAddItem : () -> Unit
+    navigateToAddItem : () -> Unit,
+    roomList: SnapshotStateList<RoomModel>,
+    furnitureList: SnapshotStateList<FurnitureModel>,
+    currentRoom: MutableState<Int>
 ) {
     val mainViewModel = viewModel<MainViewModel>()
 
@@ -54,32 +58,8 @@ fun MainScreen(
         mutableStateOf(0)
     }
 
-    val rooms = remember {
-        mutableStateListOf(
-            RoomModel(id = 0, text = "Все"),
-            RoomModel(id = 1, text = "Столовая"),
-            RoomModel(id = 2, text = "Кухня"),
-            RoomModel(id = 3, text = "Спальня"),
-            RoomModel(id = 4, text = "Ванная")
-        )
-    }
-
     var textFieldValue by remember {
         mutableStateOf("")
-    }
-
-    val picture = painterResource(id = R.drawable.image_photo_room)
-
-    val furniture = remember {
-        mutableStateListOf(
-            FurnitureModel(isSelected = false, text = "Торшер", room = 1, roomName = rooms[1].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Розетка", room = 1, roomName = rooms[1].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Розетка", room = 2, roomName = rooms[2].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Чайник", room = 2, roomName = rooms[2].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Торшер", room = 3, roomName = rooms[3].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Чайник", room = 3, roomName = rooms[3].text, painter = picture),
-            FurnitureModel(isSelected = false, text = "Торшер", room = 4, roomName = rooms[4].text, painter = picture)
-        )
     }
 
     var dialogIsActive by remember {
@@ -221,6 +201,7 @@ fun MainScreen(
                                 )
                                 TextButton(onClick = {
                                     dialogIsActive = !dialogIsActive
+                                    currentRoom.value = roomList[selectedIndex].id
                                     navigateToAddItem()
                                 }) {
                                     Text(
@@ -298,7 +279,7 @@ fun MainScreen(
                                         shape = RoundedCornerShape(32.dp)
                                     ),
                                     onClick = {
-                                        rooms.add(RoomModel(id = rooms.last().id + 1, text = textFieldValue))
+                                        roomList.add(RoomModel(id = roomList.last().id + 1, text = textFieldValue))
                                         dialogNameActive = !dialogNameActive
                                     }) {
                                     Row(
@@ -343,7 +324,7 @@ fun MainScreen(
                 divider = {},
                 indicator = {}
             ) {
-                rooms.forEachIndexed { index, room ->
+                roomList.forEachIndexed { index, room ->
                     Tab(
                         selected = index == selectedIndex,
                         onClick = { selectedIndex = index },
@@ -360,7 +341,7 @@ fun MainScreen(
                 }
             }
 
-            if (mainScreenStates == MainScreenStates.DeletingState && rooms[selectedIndex].id != 0) {
+            if (mainScreenStates == MainScreenStates.DeletingState && roomList[selectedIndex].id != 0) {
                 Surface(
                     modifier = Modifier.padding(
                         horizontal = 24.dp
@@ -379,16 +360,16 @@ fun MainScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val currentText = rooms.getOrNull(selectedIndex)?.text
+                        val currentText = roomList.getOrNull(selectedIndex)?.text
                         Text(
                             text = currentText?:"",
                             color = White,
                             fontSize = 16.sp
                         )
                         IconButton(onClick = {
-                            while(furniture.find { it.room == rooms[selectedIndex].id } != null)
-                                furniture.remove(furniture.find { it.room == rooms[selectedIndex].id })
-                            rooms.removeAt(selectedIndex--)
+                            while(furnitureList.find { it.room == roomList[selectedIndex].id } != null)
+                                furnitureList.remove(furnitureList.find { it.room == roomList[selectedIndex].id })
+                            roomList.removeAt(selectedIndex--)
                         }) {
                             Icon(
                                 modifier = Modifier.size(20.dp),
@@ -407,16 +388,16 @@ fun MainScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 columns = GridCells.Fixed(2)
             ) {
-                items(furniture.size) { currentFurniture ->
-                    if (rooms[selectedIndex].id == 0 || rooms[selectedIndex].id == furniture[currentFurniture].room) {
+                items(furnitureList.size) { currentFurniture ->
+                    if (roomList[selectedIndex].id == 0 || roomList[selectedIndex].id == furnitureList[currentFurniture].room) {
                         FurnitureItemUI(
                             furnitureItemStates =
                             if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
                             else FurnitureItemStates.DeletedState,
                             onDelete = {
-                                furniture.remove(furniture[currentFurniture])
+                                furnitureList.remove(furnitureList[currentFurniture])
                             },
-                            furnitureModel = furniture[currentFurniture]
+                            furnitureModel = furnitureList[currentFurniture]
                         )
                     }
                 }
