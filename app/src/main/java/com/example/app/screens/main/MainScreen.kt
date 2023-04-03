@@ -45,7 +45,6 @@ fun MainScreen(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-
     val mainScreenStates = remember(editingButtonIsChecked) {
         if (editingButtonIsChecked) MainScreenStates.DeletingState
         else MainScreenStates.SimpleState
@@ -54,7 +53,6 @@ fun MainScreen(
     var selectedIndex by remember {
         mutableStateOf(0)
     }
-
 
     val rooms = remember {
         mutableStateListOf(
@@ -387,7 +385,11 @@ fun MainScreen(
                             color = White,
                             fontSize = 16.sp
                         )
-                        IconButton(onClick = { rooms.removeAt(selectedIndex--) }) {
+                        IconButton(onClick = {
+                            while(furniture.find { it.room == rooms[selectedIndex].id } != null)
+                                furniture.remove(furniture.find { it.room == rooms[selectedIndex].id })
+                            rooms.removeAt(selectedIndex--)
+                        }) {
                             Icon(
                                 modifier = Modifier.size(20.dp),
                                 imageVector = Icons.Outlined.Delete,
@@ -406,19 +408,17 @@ fun MainScreen(
                 columns = GridCells.Fixed(2)
             ) {
                 items(furniture.size) { currentFurniture ->
-                    (
-                        if (rooms[selectedIndex].id == 0 || rooms[selectedIndex].id == furniture[currentFurniture].room) {
-                            FurnitureItemUI(
-                                furnitureItemStates =
-                                if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
-                                else FurnitureItemStates.DeletedState,
-                                onDelete = {
-                                    furniture.remove(furniture[currentFurniture])
-                                },
-                                furnitureModel = furniture[currentFurniture]
-                            )
-                        }
-                    )
+                    if (rooms[selectedIndex].id == 0 || rooms[selectedIndex].id == furniture[currentFurniture].room) {
+                        FurnitureItemUI(
+                            furnitureItemStates =
+                            if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
+                            else FurnitureItemStates.DeletedState,
+                            onDelete = {
+                                furniture.remove(furniture[currentFurniture])
+                            },
+                            furnitureModel = furniture[currentFurniture]
+                        )
+                    }
                 }
 
             }
