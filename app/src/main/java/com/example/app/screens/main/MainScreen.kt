@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ai_home.R
 import com.example.app.screens.main.models.FurnitureItemStates
 import com.example.app.screens.main.models.FurnitureModel
+import com.example.app.screens.main.models.RoomModel
 import com.example.app.ui.theme.*
 import kotlin.math.abs
 
@@ -57,11 +58,11 @@ fun MainScreen(
 
     val rooms = remember {
         mutableStateListOf(
-            "Все",
-            "Столовая",
-            "Кухня",
-            "Спальня",
-            "Ванная"
+            RoomModel(id = 0, text = "Все"),
+            RoomModel(id = 1, text = "Столовая"),
+            RoomModel(id = 2, text = "Кухня"),
+            RoomModel(id = 3, text = "Спальня"),
+            RoomModel(id = 4, text = "Ванная")
         )
     }
 
@@ -71,43 +72,15 @@ fun MainScreen(
 
     val picture = painterResource(id = R.drawable.image_photo_room)
 
-    val furniture = remember(mainScreenStates) {
+    val furniture = remember {
         mutableStateListOf(
-            FurnitureModel(
-                isSelected = false,
-                text = "Торшер",
-                room_id = 1,
-                room = rooms[1],
-                painter = picture
-            ),
-            FurnitureModel(
-                isSelected = false,
-                text = "Торшер",
-                room_id = 1,
-                room = rooms[1],
-                painter = picture
-            ),
-            FurnitureModel(
-                isSelected = false,
-                text = "Торшер",
-                room_id = 2,
-                room = rooms[2],
-                painter = picture
-            ),
-            FurnitureModel(
-                isSelected = false,
-                text = "Торшер",
-                room_id = 2,
-                room = rooms[2],
-                painter = picture
-            ),
-            FurnitureModel(
-                isSelected = false,
-                text = "Торшер",
-                room_id = 3,
-                room = rooms[3],
-                painter = picture
-            )
+            FurnitureModel(isSelected = false, text = "Торшер", room = 1, roomName = rooms[1].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Розетка", room = 1, roomName = rooms[1].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Розетка", room = 2, roomName = rooms[2].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Чайник", room = 2, roomName = rooms[2].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Торшер", room = 3, roomName = rooms[3].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Чайник", room = 3, roomName = rooms[3].text, painter = picture),
+            FurnitureModel(isSelected = false, text = "Торшер", room = 4, roomName = rooms[4].text, painter = picture)
         )
     }
 
@@ -327,7 +300,7 @@ fun MainScreen(
                                         shape = RoundedCornerShape(32.dp)
                                     ),
                                     onClick = {
-                                        rooms.add(textFieldValue)
+                                        rooms.add(RoomModel(id = rooms.last().id + 1, text = textFieldValue))
                                         dialogNameActive = !dialogNameActive
                                     }) {
                                     Row(
@@ -382,14 +355,14 @@ fun MainScreen(
                     ) {
                         RoomItem(
                             modifier = Modifier,
-                            text = room,
+                            text = room.text,
                             distance = abs(index - selectedIndex)
                         )
                     }
                 }
             }
 
-            if (mainScreenStates == MainScreenStates.DeletingState) {
+            if (mainScreenStates == MainScreenStates.DeletingState && rooms[selectedIndex].id != 0) {
                 Surface(
                     modifier = Modifier.padding(
                         horizontal = 24.dp
@@ -408,13 +381,13 @@ fun MainScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val currentText = rooms.getOrNull(selectedIndex)
+                        val currentText = rooms.getOrNull(selectedIndex)?.text
                         Text(
                             text = currentText?:"",
                             color = White,
                             fontSize = 16.sp
                         )
-                        IconButton(onClick = { rooms.remove(currentText) }) {
+                        IconButton(onClick = { rooms.removeAt(selectedIndex--) }) {
                             Icon(
                                 modifier = Modifier.size(20.dp),
                                 imageVector = Icons.Outlined.Delete,
@@ -432,10 +405,9 @@ fun MainScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 columns = GridCells.Fixed(2)
             ) {
-
                 items(furniture.size) { currentFurniture ->
                     (
-                        if (selectedIndex == 0 || selectedIndex == furniture[currentFurniture].room_id) {
+                        if (rooms[selectedIndex].id == 0 || rooms[selectedIndex].id == furniture[currentFurniture].room) {
                             FurnitureItemUI(
                                 furnitureItemStates =
                                 if (mainScreenStates == MainScreenStates.SimpleState) FurnitureItemStates.SimpleState
@@ -453,4 +425,3 @@ fun MainScreen(
         }
     }
 }
-
