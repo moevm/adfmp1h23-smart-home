@@ -87,7 +87,7 @@ fun FurnitureItemUI(
                     )
                     Text(
                         modifier = Modifier.padding(top = 6.dp),
-                        text = furnitureModel.room,
+                        text = furnitureModel.roomName,
                         color = White,
                         fontSize = 10.sp
                     )
