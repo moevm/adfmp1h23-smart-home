@@ -34,7 +34,8 @@ import com.example.app.ui.theme.White
 @Composable
 fun AddScreen(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    addFurniture: (name: String) -> Any
 ) {
 
     var expandedState by remember {
@@ -222,7 +223,9 @@ fun AddScreen(
             Column(modifier = Modifier.padding(top = 8.dp)) {
                 devicesList.forEach {
                     CategoryItem(
-                        deviceCategory = it
+                        deviceCategory = it,
+                        addFurniture = addFurniture,
+                        navigateBack = navigateBack
                     )
                 }
             }

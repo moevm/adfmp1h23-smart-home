@@ -12,10 +12,7 @@ import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +28,9 @@ import com.example.app.ui.theme.White
 @Composable
 fun CategoryItem(
     modifier: Modifier = Modifier,
-    deviceCategory: DeviceCategory
+    deviceCategory: DeviceCategory,
+    addFurniture: (name: String) -> Any,
+    navigateBack: () -> Unit
 ) {
     var isOpened by remember {
         mutableStateOf(false)
@@ -95,20 +94,27 @@ fun CategoryItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(
-                                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 16.dp),
-                                    text = it,
-                                    color = TextColor,
-                                    fontSize = 16.sp
-                                )
+                                TextButton(
+                                    modifier = Modifier.padding(vertical = 0.dp, horizontal = 16.dp),
+                                    onClick = {
+                                        addFurniture(it)
+                                        navigateBack()
+                                    }
+                                ) {
+                                    Text(
+                                        text = it,
+                                        color = TextColor,
+                                        fontSize = 16.sp
+                                    )
+                                }
                             }
-
                         }
-                    }
 
+                    }
                 }
+
             }
         }
-
     }
+
 }
